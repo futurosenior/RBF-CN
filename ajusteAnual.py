@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-data = pd.read_csv('dados.csv', skipfooter=1, engine='python')
+data = pd.read_csv('dados.csv')
 
 X = np.arange(1, 13)  
 y = data.iloc[:-1, 1:].sum()  
@@ -13,7 +13,10 @@ def rbf(x, c, s):
 centro = np.linspace(1, 12, 12) 
 largura = np.repeat(1.0, len(centro)) 
 
-rbf_values = np.array([rbf(X, c, s) for c, s in zip(centro, largura)]).T
+rbf_values_list = []
+for c, s in zip(centro, largura):
+    rbf_values_list.append(rbf(X, c, s))
+rbf_values = np.array(rbf_values_list).T
 
 pesos = np.linalg.pinv(rbf_values).dot(y)
 
